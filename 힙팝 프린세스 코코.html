@@ -1,0 +1,356 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html lang="ja">
+<head>
+<meta http-equiv="Content-Style-Type" content="text/css">
+<meta http-equiv="Content-Script-Type" content="text/javascript">
+<title>힙팝 프린세스 코코</title>
+<script type="text/javascript">
+<!--
+//*********************************************************
+//
+// ?価するメンバ?の名前のリスト
+//
+// この部分を変更して下さい。名前の削除・追加も可?です。
+// 名前を引用符(")で括り、コン?(,)で区切って下さい。
+// 但し、リストの最後にはコン?を入れてはいけません。
+//
+//*********************************************************
+var namMember = new Array(
+
+"<img src=https://img.notionusercontent.com/s3/prod-files-secure%2Fbea63a06-f1ae-810a-97fe-0003e77e39c7%2F0a7fda5f-d5ba-4a13-b9f6-294b9624aec4%2Fimage.png/size/w=600?exp=1766243192&sig=3dU4spzyg-D2ngQnDPZa-oa7Bn7iEIE0C85OiGncz2U&id=2ce63a06-f1ae-80f5-b1c1-d3e576c2b162&table=block&userId=2a2d872b-594c-81f4-8dca-0002694f9fab> <br> GROUP CYPHER : JAPAN A</br>",
+"<img src=https://img.notionusercontent.com/s3/prod-files-secure%2Fbea63a06-f1ae-810a-97fe-0003e77e39c7%2Fab306fb0-e9af-49bb-a4e0-504a2d68154f%2Fimage.png/size/w=600?exp=1766243248&sig=pc05gBlIFoWN10PBCF8sssWE2WknS_AyCSrlTcdxkcU&id=2ce63a06-f1ae-8035-b437-c62fc293c4b0&table=block&userId=2a2d872b-594c-81f4-8dca-0002694f9fab> <br> JAPAN A WANNABE </br>",
+"<img src=https://img.notionusercontent.com/s3/prod-files-secure%2Fbea63a06-f1ae-810a-97fe-0003e77e39c7%2F8606557d-2a31-4f6c-8f50-b0ee0488763f%2Fimage.png/size/w=600?exp=1766243274&sig=jfWHKIGd8fqfx-U22C1p6d7DzgVqKqxYqinc_kuQtPA&id=2ce63a06-f1ae-80f0-b098-eb708e0d1f6b&table=block&userId=2a2d872b-594c-81f4-8dca-0002694f9fab> <br> 1vs1 창작 배틀 </br>",
+"<img src=https://img.notionusercontent.com/s3/prod-files-secure%2Fbea63a06-f1ae-810a-97fe-0003e77e39c7%2F61bba646-be4a-49ba-917a-3f45ffcc8cc6%2Fimage.png/size/w=600?exp=1766243290&sig=K-h5hss-26urX9LydIlscYCUBNIT5c9GkHJHc--Pzq8&id=2ce63a06-f1ae-8092-ad7c-d44edbf219f0&table=block&userId=2a2d872b-594c-81f4-8dca-0002694f9fab> <br> B팀 DAISY </br>",
+"<img src=https://img.notionusercontent.com/s3/prod-files-secure%2Fbea63a06-f1ae-810a-97fe-0003e77e39c7%2F4e0cc4c7-f220-4183-bf37-452ff14d33a3%2Fimage.png/size/w=600?exp=1766243308&sig=rgRKELjZ78ZYpm4sWRC6H2hWW3e9blQkpxPeqtZd1u8&id=2ce63a06-f1ae-804e-9903-f7e672b117f2&table=block&userId=2a2d872b-594c-81f4-8dca-0002694f9fab> <br> 1vs1 에이스 랩 배틀 일본</br>",
+"<img src=https://img.notionusercontent.com/s3/prod-files-secure%2Fbea63a06-f1ae-810a-97fe-0003e77e39c7%2Fb7256a90-ebc9-4115-a087-79dc5d7ad29c%2Fimage.png/size/w=600?exp=1766243322&sig=aLXdrwJj-CJu92xgCQ9DTJCMgFRvDjhSCVdP3vi6QxE&id=2ce63a06-f1ae-8006-8be0-ea5383df5ab2&table=block&userId=2a2d872b-594c-81f4-8dca-0002694f9fab> <br> 3팀 the Love Bug</br>",
+"<img src=https://img.notionusercontent.com/s3/prod-files-secure%2Fbea63a06-f1ae-810a-97fe-0003e77e39c7%2Ff619efa0-e661-4dbd-a3ee-87b8133265ce%2Fimage.png/size/w=600?exp=1766243045&sig=CPuPX8wW-HuaSQGPx8qVIWLIG1F0pNgCr9TbMI-FNJ8&id=2ce63a06-f1ae-80a5-a91f-d6f33bc1ad56&table=block&userId=2a2d872b-594c-81f4-8dca-0002694f9fab> <br> 파이널리스트 선발전</br>",
+"<img src=https://img.notionusercontent.com/s3/prod-files-secure%2Fbea63a06-f1ae-810a-97fe-0003e77e39c7%2F5203f2f8-1424-464e-88b3-33fa552ffed2%2Fimage.png/size/w=600?exp=1766243350&sig=aUfDbPeUFztbuDo3yE-xazvMglawTyWqTIZ0oCZdDOU&id=2ce63a06-f1ae-80d6-a722-c8a777d9ab3c&table=block&userId=2a2d872b-594c-81f4-8dca-0002694f9fab> <br> gOOd!</br>",
+
+
+
+
+
+
+);
+//*********************************************************
+
+var lstMember = new Array();
+var parent = new Array();
+var equal = new Array();
+var rec = new Array();
+var cmp1,cmp2;
+var head1,head2;
+var nrec;
+
+var numQuestion;
+var totalSize;
+var finishSize;
+var finishFlag;
+
+//変数の初期化+++++++++++++++++++++++++++++++++++++++++++++
+function initList(){
+var n = 0;
+var mid;
+var i;
+
+//??トすべき配列
+lstMember[n] = new Array();
+for (i=0; i<namMember.length; i++) {
+lstMember[n][i] = i;
+}
+parent[n] = -1;
+totalSize = 0;
+n++;
+
+for (i=0; i<lstMember.length; i++) {
+//要素数が２以上なら２分割し、
+//分割された配列をlstMemberの最後に加える
+if(lstMember[i].length>=2) {
+mid = Math.ceil(lstMember[i].length/2);
+lstMember[n] = new Array();
+lstMember[n] = lstMember[i].slice(0,mid);
+totalSize += lstMember[n].length;
+parent[n] = i;
+n++;
+lstMember[n] = new Array();
+lstMember[n] = lstMember[i].slice(mid,lstMember[i].length);
+totalSize += lstMember[n].length;
+parent[n] = i;
+n++;
+}
+}
+
+//保存用配列
+for (i=0; i<namMember.length; i++) {
+rec[i] = 0;
+}
+nrec = 0;
+
+//引き分けの結果を保存するリスト
+//キ?：リンク始?の値
+// 値 ：リンク終?の値
+for (i=0; i<=namMember.length; i++) {
+equal[i] = -1;
+}
+
+cmp1 = lstMember.length-2;
+cmp2 = lstMember.length-1;
+head1 = 0;
+head2 = 0;
+numQuestion = 1;
+finishSize = 0;
+finishFlag = 0;
+}
+
+//リストの??ト+++++++++++++++++++++++++++++++++++++++++++
+//flag：比較結果
+//  -1：左を選択
+//   0：引き分け
+//   1：右を選択
+function sortList(flag){
+var i;
+var str;
+
+//recに保存
+if (flag<0) {
+rec[nrec] = lstMember[cmp1][head1];
+head1++;
+nrec++;
+finishSize++;
+while (equal[rec[nrec-1]]!=-1) {
+rec[nrec] = lstMember[cmp1][head1];
+head1++;
+nrec++;
+finishSize++;
+}
+}
+else if (flag>0) {
+rec[nrec] = lstMember[cmp2][head2];
+head2++;
+nrec++;
+finishSize++;
+while (equal[rec[nrec-1]]!=-1) {
+rec[nrec] = lstMember[cmp2][head2];
+head2++;
+nrec++;
+finishSize++;
+}
+}
+else {
+rec[nrec] = lstMember[cmp1][head1];
+head1++;
+nrec++;
+finishSize++;
+while (equal[rec[nrec-1]]!=-1) {
+rec[nrec] = lstMember[cmp1][head1];
+head1++;
+nrec++;
+finishSize++;
+}
+equal[rec[nrec-1]] = lstMember[cmp2][head2];
+rec[nrec] = lstMember[cmp2][head2];
+head2++;
+nrec++;
+finishSize++;
+while (equal[rec[nrec-1]]!=-1) {
+rec[nrec] = lstMember[cmp2][head2];
+head2++;
+nrec++;
+finishSize++;
+}
+}
+
+//片方のリストを走査し終えた後の処理
+if (head1<lstMember[cmp1].length && head2==lstMember[cmp2].length) {
+//リストcmp2が走査済 - リストcmp1の残りをコピ?
+while (head1<lstMember[cmp1].length){
+rec[nrec] = lstMember[cmp1][head1];
+head1++;
+nrec++;
+finishSize++;
+}
+}
+else if (head1==lstMember[cmp1].length && head2<lstMember[cmp2].length) {
+//リストcmp1が走査済 - リストcmp2の残りをコピ?
+while (head2<lstMember[cmp2].length){
+rec[nrec] = lstMember[cmp2][head2];
+head2++;
+nrec++;
+finishSize++;
+}
+}
+
+//両方のリストの最後に到達した場合は
+//親リストを更新する
+if (head1==lstMember[cmp1].length && head2==lstMember[cmp2].length) {
+for (i=0; i<lstMember[cmp1].length+lstMember[cmp2].length; i++) {
+lstMember[parent[cmp1]][i] = rec[i];
+}
+lstMember.pop();
+lstMember.pop();
+cmp1 = cmp1-2;
+cmp2 = cmp2-2;
+head1 = 0;
+head2 = 0;
+
+//新しい比較を行う前にrecを初期化
+if (head1==0 && head2==0) {
+for (i=0; i<namMember.length; i++) {
+rec[i] = 0;
+}
+nrec = 0;
+}
+}
+
+if (cmp1<0) {
+str = "Battle No."+(numQuestion-1)+"<br>"+Math.floor(finishSize*100/totalSize)+"% sorted.";
+document.getElementById("battleNumber").innerHTML = str;
+
+showResult();
+finishFlag = 1;
+}
+else {
+showImage();
+}
+}
+
+//結果の?示+++++++++++++++++++++++++++++++++++++++++++++++
+function showResult() {
+var ranking = 1;
+var sameRank = 1;
+var str = "";
+var i;
+
+str += "<table style=\"width:200px; font-size:12px; line-height:120%; margin-left:auto; margin-right:auto; border:1px solid #000; border-collapse:collapse\" align=\"center\">";
+str += "<tr><td style=\"color:#ffffff; background-color:#000; text-align:center;\">순위<\/td><td style=\"color:#ffffff; background-color:#000; text-align:center;\">이름<\/td><\/tr>";
+
+for (i=0; i<namMember.length; i++) {
+str += "<tr><td style=\"border:1px solid #000; text-align:right; padding-right:5px;\">"+ranking+"<\/td><td style=\"border:1px solid #000; padding-left:5px;\">"+namMember[lstMember[0][i]]+"<\/td><\/tr>";
+if (i<namMember.length-1) {
+if (equal[lstMember[0][i]]==lstMember[0][i+1]) {
+sameRank++;
+} else {
+ranking += sameRank;
+sameRank = 1;
+}
+}
+}
+str += "<\/table>";
+
+document.getElementById("resultField").innerHTML = str;
+}
+
+//比較する２つ要素の?示+++++++++++++++++++++++++++++++++++
+function showImage() {
+var str0 = "Battle No."+numQuestion+"<br>"+Math.floor(finishSize*100/totalSize)+"% sorted.";
+var str1 = ""+toNameFace(lstMember[cmp1][head1]);
+var str2 = ""+toNameFace(lstMember[cmp2][head2]);
+
+document.getElementById("battleNumber").innerHTML = str0;
+document.getElementById("leftField").innerHTML = str1;
+document.getElementById("rightField").innerHTML = str2;
+
+numQuestion++;
+}
+
+//数値を名前（顔文字）に変換+++++++++++++++++++++++++++++++
+function toNameFace(n){
+var str = namMember[n];
+
+//顔文字を追加する場合は以下のコメントアウトを外す
+//namMemberのインデックスと矛盾しないように注意
+/*
+str += "<br>────<br>";
+switch(n) {
+//case -1 はサンプルなので削除すること
+case -1: str+="（ ´∀｀）";break;
+default: str+=""+n;
+}
+*/
+return str;
+}
+//-->
+</script>
+<style type="text/css">
+<!--
+/**********************************************************
+
+ ?のス?イルを変更する場合はここを編集してください。
+
+**********************************************************/
+#mainTable{
+font-size: 12px;
+font-family: '돋움',sans-serif;
+text-align: center;
+vertical-align: middle;
+width: 410px;
+margin-left: auto;
+margin-right: auto;
+border-collapse: separate;
+border-spacing: 10px 5px;
+}
+#leftField{
+width: 120px;
+height: 150px;
+border: 1px solid #000;
+}
+#rightField{
+width: 120px;
+height: 150px;
+border: 1px solid #000;
+}
+.middleField{
+width: 120px;
+height: 70px;
+border: 1px solid #000;
+}
+//-->
+<!--
+A{
+  text-decoration : none;
+}
+-->
+<!--
+a:hover{color:#99ccff;}
+-->
+</style>
+<meta name="generator" content="Namo WebEditor(Trial)">
+<meta http-equiv="content-type" content="text/html; charset=utf-8"></head>
+
+<body text="#000000" bgcolor="#ffffff" link="#0099ff" vlink="#0099ff" alink="#0099ff">
+<table id="mainTable" align="center">
+<tr>
+        <td id="battleNumber" colspan="3" style="padding-bottom: 10px;">
+            <p>&nbsp;</p>
+        </td>
+</tr>
+<tr>
+<td id="leftField" onClick="if(finishFlag==0)sortList(-1);" rowspan="2">
+&nbsp;
+</td>
+<td class="middleField" onClick="if(finishFlag==0)sortList(0);">
+둘 다 좋다
+</td>
+<td id="rightField" onClick="if(finishFlag==0)sortList(1);" rowspan="2">
+</td>
+</tr>
+<tr>
+<td class="middleField" onClick="if(finishFlag==0)sortList(0);">
+모르겠다
+</td>
+</tr>
+</table><br><br>
+<div id="resultField" style="text-align:center;">
+    <p><font size="2" face="돋움"><span style="">좋아하는 코코의 무대를 골라보세요♡</font></p>
+    <p><font size="2" face="돋움">하이피 코코도 많은 응원 부탁드립니다!!</font></p>
+
+</div>
+<script type="text/javascript">
+<!--
+initList();
+showImage();
+//-->
+</script>
+
+</body>
+</html>
